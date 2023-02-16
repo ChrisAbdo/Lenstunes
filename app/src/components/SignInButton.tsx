@@ -6,6 +6,7 @@ import {
   ChainId,
   MediaRenderer,
 } from '@thirdweb-dev/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import useLensUser from '../../../lib/auth/useLensUser';
@@ -40,7 +41,7 @@ export default function SignInButton({}: Props) {
 
   // Loading their signed in state
   if (isSignedInQuery.isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading... you might need to refresh</div>;
   }
 
   // If the user is not signed in, we need to request a login
@@ -70,15 +71,20 @@ export default function SignInButton({}: Props) {
   // If it's done loading and there's a default profile
   if (profileQuery.data?.defaultProfile) {
     return (
-      <div className="flex">
-        <MediaRenderer
+      <Button
+        variant="default"
+        size="lg"
+        className="flex border border-white rounded-md"
+        disabled
+      >
+        {/* <MediaRenderer
           // @ts-ignore
           src={profileQuery?.data?.defaultProfile?.picture?.original?.url || ''}
           alt={profileQuery.data.defaultProfile.name || ''}
           style={{
             width: 48,
             height: 48,
-            borderRadius: '50%',
+            borderRadius: '20%',
           }}
         />
         <Link
@@ -86,8 +92,15 @@ export default function SignInButton({}: Props) {
           className="text-xl font-bold ml-4 mt-2.5"
         >
           Welcome {profileQuery.data.defaultProfile.name}! 🎉
+        </Link> */}
+        <Link
+          className="text-md"
+          href={`/profile/${profileQuery.data.defaultProfile.handle}`}
+        >
+          Welcome {profileQuery.data.defaultProfile.name} (
+          {profileQuery.data.defaultProfile.handle})! 🎉
         </Link>
-      </div>
+      </Button>
     );
   }
 
